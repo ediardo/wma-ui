@@ -1,17 +1,11 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  Button
-} from "reactstrap";
+import { Container, Col, Input, Row, Button } from "reactstrap";
 import styled from "styled-components";
 import Select from "react-select";
-import { aircrafts } from "./aircrafts";
 import { airlines } from "./airlines";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import validator from "validator";
 
 const selectableStructure = data =>
@@ -30,11 +24,11 @@ const EmojiContainer = styled.div`
 `;
 const AirlineContainer = styled.div`
   display: inline-block;
-  width: 50%;
+  width: 100%;
 `;
 const InputContainer = styled.div`
   display: inline-block;
-  width: 50%;
+  width: 100%;
 `;
 const AircraftContainer = styled.div`
   background-color: #fafafa;
@@ -42,6 +36,10 @@ const AircraftContainer = styled.div`
 
 const StyledButton = styled(Button)`
   width: 100%;
+`;
+
+const StyledSelect = styled(Select)`
+  font-size: 1.45rem;
 `;
 const API_HOSTNAME = "http://localhost:8080";
 
@@ -64,7 +62,9 @@ class App extends Component {
     this.state = {
       airline: "",
       flight: "",
-      aircraftInfo: {}
+      apiResponse: "",
+      validAirline: false,
+      validFlight: false
     };
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onClickFetch = this.onClickFetch.bind(this);
@@ -90,7 +90,7 @@ class App extends Component {
         })
         .then(res => {
           console.log(res.data);
-          this.setState({ aircraftInfo: res.data });
+          this.setState({ apiResponse: res.data });
         });
     }
   }
@@ -101,11 +101,22 @@ class App extends Component {
 
   onChangeInput(evt) {
     const { value } = evt.target;
-    this.setState({ flight: value });
+    const validFlight = value !== undefined && value.length > 2;
+    this.setState({ flight: value, validFlight });
   }
 
   onChangeAirline(selected) {
-    this.setState({ airline: selected.value });
+    if (selected === null) {
+      this.setState({
+        airline: "",
+        validAirline: false
+      });
+    } else {
+      this.setState({
+        airline: selected.value,
+        validAirline: selected.value !== undefined && selected.value !== ""
+      });
+    }
   }
 
   onKeyDown(evt) {
@@ -121,7 +132,7 @@ class App extends Component {
   }
 
   render() {
-    const { flight, aircraftInfo } = this.state;
+    const { flight, apiResponse, validAirline, validFlight } = this.state;
     return (
       <Container>
         <div>
@@ -131,32 +142,57 @@ class App extends Component {
           <Emoji symbol="🤔" />
           <Emoji symbol="✈️" />
         </EmojiContainer>
-        <div>
-          <AirlineContainer>
-            <Select
-              isClearable={true}
-              isSearchable={true}
-              options={selectableStructure(airlines)}
-              placeholder="Airline"
-              onChange={this.onChangeAirline}
-            />
-          </AirlineContainer>
-          <InputContainer>
-            <Input
-              onChange={this.onChangeInput}
-              onKeyDown={this.onKeyDown}
-              value={flight}
-              placeholder="Flight #"
-            />
-          </InputContainer>
+        <Row>
+          <Col xs="12" sm="6">
+            <AirlineContainer>
+              <StyledSelect
+                isClearable={true}
+                isSearchable={true}
+                options={selectableStructure(airlines)}
+                placeholder="Airline"
+                onChange={this.onChangeAirline}
+              />
+            </AirlineContainer>
+          </Col>
+          <Col xs="12" sm="6">
+            <InputContainer>
+              <Input
+                onChange={this.onChangeInput}
+                onKeyDown={this.onKeyDown}
+                value={flight}
+                placeholder="Flight #"
+                bsSize="lg"
+              />
+            </InputContainer>
+          </Col>
+        </Row>
 
-          <StyledButton size="lg" color="light" onClick={this.onClickFetch}>
-            <Emoji symbol="Search 🔍" />
-          </StyledButton>
+        <StyledButton
+          size="lg"
+          color="primary"
+          onClick={this.onClickFetch}
+          disabled={!(validFlight && validAirline)}
+          className="my-4"
+        >
+          <Emoji symbol="Search for aircraft 🔍" />
+        </StyledButton>
+        <div
+          className="result"
+          dangerouslySetInnerHTML={{ __html: apiResponse }}
+        />
+        <div>
+          <p>
+            Made by{" "}
+            <a className="muted" href="https://twitter.com/ediardo">
+              Eddie Ramirez
+              <Emoji symbol="👨🏻‍💻" />
+            </a>{" "}
+            |{" "}
+            <a className="muted" href="https://github.com/ediardo/wma-ui">
+              View the source code
+            </a>
+          </p>
         </div>
-        <AircraftContainer>
-          {!isEmptyObj(aircraftInfo) && <h1>Somethng</h1>}
-        </AircraftContainer>
       </Container>
     );
   }

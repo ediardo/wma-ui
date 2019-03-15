@@ -1,5 +1,4 @@
 export const airlines = {
-  "3FF": "Fly Colombia ( Interliging Flights )",
   A1F: "Atifly",
   AAA: "Ansett Australia",
   AAF: "Aigle Azur",
