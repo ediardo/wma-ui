@@ -71,6 +71,7 @@ export const airlines = {
   ARF: "Aero Flight",
   ARG: "Aerolineas Argentinas",
   ARU: "Aruba Airlines",
+  ASA: "Alaska Airlines",
   ASD: "Air Sinai",
   ASH: "Mesa Airlines",
   ASL: "Air Serbia",

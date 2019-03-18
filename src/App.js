@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Select from "react-select";
 import { airlines } from "./airlines";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import validator from "validator";
 
@@ -14,12 +13,12 @@ const selectableStructure = data =>
   });
 
 const Title = styled.h1`
-  font-family: "Roboto Condensed", sans-serif;
+  font-weight: bold;
   text-align: center;
 `;
 
 const EmojiContainer = styled.div`
-  font-size: 3.5rem;
+  font-size: 3rem;
   text-align: center;
 `;
 const AirlineContainer = styled.div`
@@ -64,7 +63,9 @@ class App extends Component {
       flight: "",
       apiResponse: "",
       validAirline: false,
-      validFlight: false
+      validFlight: false,
+      loading: false,
+      error: false
     };
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onClickFetch = this.onClickFetch.bind(this);
@@ -77,21 +78,31 @@ class App extends Component {
   fetchData() {
     const { airline, flight } = this.state;
     if (!(validator.isEmpty(flight) && validator.isEmpty(airline))) {
-      console.log(`${airline}${flight}`);
-      axios
-        .get(`${API_HOSTNAME}/api`, {
-          headers: {
-            "allow-control-allow-origin": "http://localhost:3000"
-          },
-          params: {
-            airline,
-            flight
-          }
-        })
-        .then(res => {
-          console.log(res.data);
-          this.setState({ apiResponse: res.data });
-        });
+      this.setState(
+        { loading: !this.state.loading, error: false, apiResponse: "" },
+        () => {
+          axios
+            .get(`${API_HOSTNAME}/api`, {
+              headers: {
+                "allow-control-allow-origin": "http://localhost:3000"
+              },
+              params: {
+                airline,
+                flight
+              }
+            })
+            .then(res => {
+              this.setState({
+                loading: false,
+                error: false,
+                apiResponse: res.data
+              });
+            })
+            .catch(err => {
+              this.setState({ loading: false, error: true });
+            });
+        }
+      );
     }
   }
 
@@ -132,15 +143,21 @@ class App extends Component {
   }
 
   render() {
-    const { flight, apiResponse, validAirline, validFlight } = this.state;
+    const {
+      flight,
+      apiResponse,
+      validAirline,
+      validFlight,
+      loading,
+      error
+    } = this.state;
     return (
-      <Container>
+      <Container className="my-4">
         <div>
           <Title>What's my aircraft?</Title>
         </div>
         <EmojiContainer>
           <Emoji symbol="🤔" />
-          <Emoji symbol="✈️" />
         </EmojiContainer>
         <Row>
           <Col xs="12" sm="6">
@@ -176,6 +193,18 @@ class App extends Component {
         >
           <Emoji symbol="Search for aircraft 🔍" />
         </StyledButton>
+        {loading && (
+          <div className="loading text-center">
+            <h4>
+              Loading <Emoji symbol={"⏳"} />
+            </h4>
+          </div>
+        )}
+        {error && (
+          <div className="error text-center">
+            There was an error. Please try again later.
+          </div>
+        )}
         <div
           className="result"
           dangerouslySetInnerHTML={{ __html: apiResponse }}
@@ -186,10 +215,6 @@ class App extends Component {
             <a className="muted" href="https://twitter.com/ediardo">
               Eddie Ramirez
               <Emoji symbol="👨🏻‍💻" />
-            </a>{" "}
-            |{" "}
-            <a className="muted" href="https://github.com/ediardo/wma-ui">
-              View the source code
             </a>
           </p>
         </div>
