@@ -29,10 +29,6 @@ const InputContainer = styled.div`
   display: inline-block;
   width: 100%;
 `;
-const AircraftContainer = styled.div`
-  background-color: #fafafa;
-`;
-
 const StyledButton = styled(Button)`
   width: 100%;
 `;
@@ -40,7 +36,9 @@ const StyledButton = styled(Button)`
 const StyledSelect = styled(Select)`
   font-size: 1.45rem;
 `;
-const API_HOSTNAME = "http://localhost:8080";
+
+const API_HOSTNAME = process.env.REACT_APP_API_HOSTNAME;
+const CORS = process.env.REACT_APP_CORS || "https://localhost:3000";
 
 const Emoji = props => (
   <span
@@ -52,8 +50,6 @@ const Emoji = props => (
     {props.symbol}
   </span>
 );
-
-const isEmptyObj = obj => Object.keys(obj).length === 0;
 
 class App extends Component {
   constructor(props) {
@@ -84,7 +80,7 @@ class App extends Component {
           axios
             .get(`${API_HOSTNAME}/api`, {
               headers: {
-                "allow-control-allow-origin": "http://localhost:3000"
+                "allow-control-allow-origin": CORS
               },
               params: {
                 airline,
