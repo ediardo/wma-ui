@@ -1,6 +1,10 @@
 {
   "version": 2,
   "name": "wma",
+  "env": {
+    "REACT_APP_API_HOSTNAME": "http://ec2-18-188-21-8.us-east-2.compute.amazonaws.com",
+    "REACT_APP_CORS": "https://whatsmyaircraft.com"
+  },
   "builds": [
     {
       "src": "package.json",
