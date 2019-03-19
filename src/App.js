@@ -7,6 +7,17 @@ import axios from "axios";
 import "./App.css";
 import validator from "validator";
 
+const ENV = process.env.NODE_ENV;
+
+const API_HOSTNAME =
+  ENV === "production"
+    ? "http://ec2-18-188-21-8.us-east-2.compute.amazonaws.com"
+    : "http://localhost:8080";
+const CORS =
+  ENV === "production"
+    ? "https://whatsmyaircraft.com"
+    : "https://localhost:3000";
+
 const selectableStructure = data =>
   Object.keys(data).map(key => {
     return { value: key, label: data[key] };
@@ -36,9 +47,6 @@ const StyledButton = styled(Button)`
 const StyledSelect = styled(Select)`
   font-size: 1.45rem;
 `;
-
-const API_HOSTNAME = process.env.REACT_APP_API_HOSTNAME;
-const CORS = process.env.REACT_APP_CORS || "https://localhost:3000";
 
 const Emoji = props => (
   <span
