@@ -8,15 +8,15 @@ import "./App.css";
 import validator from "validator";
 
 const ENV = process.env.NODE_ENV;
-
-const API_HOSTNAME =
-  ENV === "production"
-    ? "http://ec2-18-188-21-8.us-east-2.compute.amazonaws.com"
-    : "http://localhost:8080";
-const CORS =
-  ENV === "production"
-    ? "https://whatsmyaircraft.com"
-    : "https://localhost:3000";
+let API_HOSTNAME;
+let CORS;
+if (ENV === "production") {
+  API_HOSTNAME = "https://gentle-ridge-37004.herokuapp.com/";
+  CORS = "https://whatsmyaircraft.com";
+} else {
+  API_HOSTNAME = "http://localhost:8080";
+  CORS = "https://localhost:3000";
+}
 
 const selectableStructure = data =>
   Object.keys(data).map(key => {
@@ -28,10 +28,6 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-const EmojiContainer = styled.div`
-  font-size: 3rem;
-  text-align: center;
-`;
 const AirlineContainer = styled.div`
   display: inline-block;
   width: 100%;
@@ -158,11 +154,14 @@ class App extends Component {
     return (
       <Container className="my-4">
         <div>
-          <Title>What's my aircraft?</Title>
+          <Title>
+            <Emoji symbol="🤔" /> What's my aircraft?
+            <Emoji symbol="✈️" />
+          </Title>
         </div>
-        <EmojiContainer>
-          <Emoji symbol="🤔" />
-        </EmojiContainer>
+        <p className="my-4 text-center">
+          Find the type of aircraft you're flying on for your next flight
+        </p>
         <Row>
           <Col xs="12" sm="6">
             <AirlineContainer>
@@ -216,7 +215,7 @@ class App extends Component {
         <div>
           <p>
             Made by{" "}
-            <a className="muted" href="https://twitter.com/ediardo">
+            <a className="font-weight-light" href="https://twitter.com/ediardo">
               Eddie Ramirez
               <Emoji symbol="👨🏻‍💻" />
             </a>
