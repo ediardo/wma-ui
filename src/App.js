@@ -11,7 +11,7 @@ const ENV = process.env.NODE_ENV;
 let API_HOSTNAME;
 let CORS;
 if (ENV === "production") {
-  API_HOSTNAME = "https://gentle-ridge-37004.herokuapp.com/";
+  API_HOSTNAME = "https://gentle-ridge-37004.herokuapp.com";
   CORS = "https://whatsmyaircraft.com";
 } else {
   API_HOSTNAME = "http://localhost:8080";
