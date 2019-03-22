@@ -24,6 +24,7 @@ const selectableStructure = data =>
   });
 
 const Title = styled.h1`
+  font-size: 3.5rem;
   font-weight: bold;
   text-align: center;
 `;
@@ -159,9 +160,21 @@ class App extends Component {
             <Emoji symbol="✈️" />
           </Title>
         </div>
-        <p className="my-4 text-center">
-          Find the type of aircraft you're flying on for your next flight
-        </p>
+        <h3 className="my-4 text-center">
+          Find the name of the aircraft you're flying on for your next flight
+          <div>
+            <small>
+              Follow{" "}
+              <a
+                className="font-weight-bold"
+                href="https://twitter.com/whatsmyaircraft"
+              >
+                @whatsmyaircraft
+              </a>
+            </small>
+          </div>
+        </h3>
+        <p className="m-0 text-center" />
         <Row>
           <Col xs="12" sm="6">
             <AirlineContainer>
@@ -214,11 +227,16 @@ class App extends Component {
         />
         <div>
           <p>
-            Made by{" "}
-            <a className="font-weight-light" href="https://twitter.com/ediardo">
-              Eddie Ramirez
-              <Emoji symbol="👨🏻‍💻" />
-            </a>
+            <small>
+              Made by{" "}
+              <a
+                className="font-weight-light"
+                href="https://twitter.com/ediardo"
+              >
+                @ediardo
+                <Emoji symbol="👨🏻‍💻" />
+              </a>
+            </small>
           </p>
         </div>
       </Container>
