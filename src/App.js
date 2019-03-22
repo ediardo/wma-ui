@@ -156,8 +156,10 @@ class App extends Component {
       <Container className="my-4">
         <div>
           <Title>
-            <Emoji symbol="🤔" /> What's my aircraft?
-            <Emoji symbol="✈️" />
+            <div>
+              <Emoji symbol="🤔" /> <Emoji symbol="✈️" />
+            </div>
+            What's my aircraft?
           </Title>
         </div>
         <h3 className="my-4 text-center">
