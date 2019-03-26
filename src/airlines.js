@@ -40,5 +40,9 @@ export const airlines = {
   IBU: "Indigo",
   FFT: "Frontier Airlines",
   ETH: "Ethiopian Airlines",
-  VOI: "Volaris"
+  VOI: "Volaris",
+  SWR: "Swiss International Air Lines",
+  SAS: "Scandinavian Airlines",
+  AXM: "AirAsia",
+  JBU: "JetBlue Airways"
 };

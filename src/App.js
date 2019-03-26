@@ -113,7 +113,7 @@ class App extends Component {
 
   onChangeInput(evt) {
     const { value } = evt.target;
-    const validFlight = value !== undefined && value.length > 2;
+    const validFlight = value !== undefined && value.length > 1;
     this.setState({ flight: value, validFlight });
   }
 
