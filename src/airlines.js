@@ -6,6 +6,7 @@ export const airlines = {
   AFR: "Air France",
   SWA: "Southwest Airlines",
   THY: "Turkish Airlines",
+  VOZ: "Virgin Australia",
   EZY: "easyJet",
   ANZ: "Air New Zealand",
   AUA: "Austrian Airlines",
